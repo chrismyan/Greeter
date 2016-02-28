@@ -12,8 +12,37 @@
     tools:context="com.mycompany.greeter.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
+    <EditText
+        android:id="@+id/greet_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:inputType="textCapSentences"/>
+
+    <Button
+        android:id="@+id/greet_button"
+        android:text="Greet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_below="@+id/greet_edit_text"
+        android:layout_centerHorizontal="true"
+        android:onClick="didTapGreetButton" />
+
+
+    <Button
+        android:id="@+id/reverse_button"
+        android:text="Reverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/greet_button"/>
+
+    <TextView
+        android:id="@+id/message_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:layout_below="@+id/reverse_button"/>
+
 </RelativeLayout>
