@@ -12,6 +12,10 @@ import android.widget.TextView;
  * Created by Chris on 2/28/2016.
  */
 public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActivity> {
+    Button greetButton, reverseButton;
+    TextView greetMessage;
+    MainActivity activity;
+
     public MainActivityTests() {
         super(MainActivity.class);
     }
@@ -22,7 +26,7 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
     }
 
     public void testGreet() {
-        MainActivity activity = getActivity();
+        this.setUp();
 
         final EditText nameEditText =
                 (EditText) activity.findViewById(R.id.greet_edit_text);
@@ -37,23 +41,55 @@ public class MainActivityTests extends ActivityInstrumentationTestCase2<MainActi
         getInstrumentation().waitForIdleSync();
         getInstrumentation().sendStringSync("Jake");
 
-        Button greetButton =
-                (Button) activity.findViewById(R.id.greet_button);
+        TouchUtils.clickView(this, this.greetButton);
 
-        TouchUtils.clickView(this, greetButton);
-
-        TextView greetMessage =
-                (TextView) activity.findViewById(R.id.message_text_view);
-
-        String actualText = greetMessage.getText().toString();
+        String actualText = this.greetMessage.getText().toString();
         assertEquals("Hello, Jake!", actualText);
     }
 
     public void testReverseButtonDisabled() {
-        MainActivity activity = getActivity();
+        this.setUp();
+        assertFalse(this.reverseButton.isEnabled());
+    }
 
-        Button reverse_button = (Button) activity.findViewById(R.id.reverse_button);
-        boolean button_enabled = reverse_button.isEnabled();
-        assertEquals(false, button_enabled);
+    public void testReverseButtonEnabled() {
+        this.setUp();
+        TouchUtils.clickView(this, this.greetButton);
+        boolean button_enabled = reverseButton.isEnabled();
+        assertTrue(button_enabled);
+    }
+
+    public void testReverseButtonPressed() {
+        this.setUp();
+
+        final EditText nameEditText =
+                (EditText) activity.findViewById(R.id.greet_edit_text);
+
+        getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                nameEditText.requestFocus();
+            }
+        });
+
+        getInstrumentation().waitForIdleSync();
+        getInstrumentation().sendStringSync("Jake");
+
+        TouchUtils.clickView(this, this.greetButton);
+
+        TouchUtils.clickView(this, this.reverseButton);
+
+        String actualText = this.greetMessage.getText().toString();
+        assertEquals("!ekaJ ,olleH", actualText);
+    }
+
+    public void setUp() {
+        this.activity = getActivity();
+        this.reverseButton =
+                (Button) activity.findViewById(R.id.reverse_button);
+        this.greetButton =
+                (Button) activity.findViewById(R.id.greet_button);
+        this.greetMessage =
+                (TextView) activity.findViewById(R.id.message_text_view);
     }
 }

@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -29,9 +29,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        Button btnReverse = (Button) findViewById(R.id.reverse_button);
-        btnReverse.setEnabled(false);
+        Button btn_reverse = (Button) findViewById(R.id.reverse_button);
+        btn_reverse.setEnabled(false);
     }
 
     @Override
@@ -56,6 +55,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void didTapReverseButton(View view) {
+        EditText greetEditText =
+                (EditText) findViewById(R.id.greet_edit_text);
+
+        String name = greetEditText.getText().toString();
+        String greeting = String.format("Hello, %s!", name);
+
+        TextView messageTextView =
+                (TextView) findViewById(R.id.message_text_view);
+
+        StringBuilder strBuilder = new StringBuilder(greeting);
+        messageTextView.setText(strBuilder.reverse());
+    }
+
     public void didTapGreetButton(View view) {
         EditText greetEditText =
                 (EditText) findViewById(R.id.greet_edit_text);
@@ -67,5 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 (TextView) findViewById(R.id.message_text_view);
 
         messageTextView.setText(greeting);
+
+        Button btn_reverse = (Button) findViewById(R.id.reverse_button);
+        btn_reverse.setEnabled(true);
     }
 }
